@@ -3,6 +3,7 @@ import os
 import json
 import requests
 import pandas as pd
+import glob
 from bs4 import BeautifulSoup
 from flask import render_template, request, redirect, url_for
 from config import headers
@@ -57,8 +58,43 @@ def extract():
         json.dump(all_opinions, jf, indent=4, ensure_ascii=False)
     return redirect(url_for('product', product_id=product_id, product_name=product_name))
 
+# TO DO
+
 @app.route("/products")
 def products():
+
+    all_products = []
+    path = "/data/opinions"
+    for filename in glob.glob(os.path.join(path, '*.json')): #only process .JSON files in folder.      
+    with open(filename, encoding='utf-8', mode='r') as currentFile:
+
+        average = 0
+        pros_count = 0
+        cons_count = 0
+
+        rate_vaules = filename["stars"].split('/')[0]
+        for value in rate_values:
+            average += value
+            if(filename['recommendation'] == 'Polecam'){
+                pros_count += 1
+            }
+            if(filename['recommendation'] == 'Nie polecam'){
+                cons_count += 1
+            }
+        average = average / len(rate_values)
+
+
+        single_product = {
+            "id": filename,
+            "all_pros_count": pros_count
+            "all_cons_count": cons_count
+            "average_stars": average
+        }
+        all_products.append(single_product)
+
+    with open(f"./app/data/sumarize.json", "w", encoding="UTF-8") as jf:
+    json.dump(all_products, jf, indent=4, ensure_ascii=False)
+
     return render_template("products.html")
 
 @app.route("/author")
