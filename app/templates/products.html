@@ -1,5 +1,20 @@
 {% extends 'base.html' %}
 {% block title %} {% endblock %}
 {% block content %}
-    
+    <ul class="list-group">
+        {% for product in products %}
+        <li class="list-froup-item">
+            <a type="button" class="btn btn-ceneo" href="{{url_for('product', product_id=product_product_id)}}?product_name="></a>
+            <span>{{product.product.name}}</span>
+            <span>{{product.opinions_count}}</span>
+            <span>{{product.pros_count}}</span>
+            <span>{{product.cons_count}}</span>
+            <span>{{product.average_stars|round(2)}}</span>
+            <a type="button">CSV</a>
+            <a type="button">XLSX</a>
+            <a type="button">JSON</a>
+        </li>
+        {% endfor %}
+
+    </ul>
 {% endblock %}
