@@ -2,9 +2,9 @@
 {% block title %} {% endblock %}
 {% block content %}
     <div class="btn-group" role="group" aria-label="basic example">
-        <a type="button" class="btn btn-ceneo" href="{{url_for('product', product_id=product_id,product_name=product_name}}}"><i class="bi bi-chat-right-text-fill"></i></a>
+        <a type="button" class="btn btn-ceneo" href="{{url_for('product', product_id=product_id,product_name=product_name)}}"><i class="bi bi-chat-right-text-fill"></i></a>
     </div>
     <div class="text-center">
-        <img src="={{url_for{'static', filename='images/charts/'+product_id+'_pie.png'}}}" alt="Rozkład rekomendacji w opiniach o produkcie">
+        <img src="{{url_for('static', filename='images/charts/'+product_id+'_pie.png')}}" alt="Rozkład rekomendacji w opiniach o produkcie">
     </div>
 {% endblock %}

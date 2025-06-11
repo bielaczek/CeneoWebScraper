@@ -112,18 +112,20 @@ def product(product_id):
 
 @app.route("/charts/<product_id>")
 def charts(product_id):
-    if not os.path.exists("./app.static/images/charts"):
-        os.mkdir("./app.static/images/charts")
-    with open(f"./app/data/products/{product_id}", "r", encoding="UTF-8") as jf:
+    if not os.path.exists("./app/static/images"):
+        os.mkdir("./app/static/images")
+    if not os.path.exists("./app/static/images/charts"):
+        os.mkdir("./app/static/images/charts")
+    with open(f"./app/data/products/{product_id}.json", "r", encoding="UTF-8") as jf:
         stats = json.load(jf)
     recommendations = pd.Series(stats['recommendations'])
     recommendations.plot.pie(
         label="",
-        title=f"Rozkad rekomendacji w opiniach o produkcie {product_id}",
+        title=f"Rozkład rekomendacji w opiniach o produkcie {product_id}",
         labels = ["Nie polecam", "Polecam", "Nie mam zdania"],
         colors = ['crimson', 'forestgreen', 'lightgrey'],
         autopct = '%1.1f%%'
         )
-    plt.savefig(f"./app/static/images/charts/{stats['productd_id']}_pie.png")
+    plt.savefig(f"./app/static/images/charts/{stats['product_id']}_pie.png")
     plt.close()
     return render_template("charts.html", product_id=product_id, product_name=stats['product_name'])
