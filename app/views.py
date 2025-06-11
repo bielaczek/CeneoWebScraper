@@ -123,6 +123,6 @@ def charts(product_id):
         colors = ['crimson', 'forestgreen', 'lightgrey'],
         autopct = '%1.1f%%'
         )
-    pit.savefig(f"./app/static/images/charts/{stats['productd_id']}_pie.png")
-    pit.close()
+    plt.savefig(f"./app/static/images/charts/{stats['productd_id']}_pie.png")
+    plt.close()
     return render_template("charts.html", product_id=product_id, product_name=stats['product_name'])
