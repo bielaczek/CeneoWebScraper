@@ -1,21 +1,19 @@
 {% extends 'base.html' %}
-{% block title %} {% endblock %}
+{% block title %}Lista produktów{% endblock %}
 {% block content %}
 <ul class="list-group">
     {% for product in products %}
-    <li class="list-froup-item">
-        <a type="button" class="btn btn-ceneo"
-            href="{{url_for('product', product_id=product_product_id)}}?product_name="></a>
-        <span class="badge bg-primary rounded-pill">{{product.opinions_count}}</span>
-        <span class="badge bg-success rounded-pill">{{product.pros_count}}</span>
-        <span class="badge bg-danger rounded-pill">{{product.cons_count}}</span>
-        <span class="badge bg-ceneo rounded-pill">{{product.average_stars|round(2)}}</span>
-        <span>{{product.average_stars|round(2)}}</span>
-        <a type="button" class="btn btn-info" href="#">CSV</a>
-        <a type="button" class="btn btn-info" href="#">XLSX</a>
-        <a type="button" class="btn btn-info" href="#">JSON</a>
-    </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a type="button" class="btn btn-ceneo" href="{{url_for('product', product_id=product.product_id, product_name=product.product_name)}}">{{product.product_id}}</a>
+            <span>{{product.product_name}}</span>
+            <span class="badge bg-primary">{{product.opinions_count}}</span>
+            <span class="badge bg-success">{{product.pros_count}}</span>
+            <span class="badge bg-danger">{{product.cons_count}}</span>
+            <span class="badge bg-ceneo">{{product.average_stars|round(2)}}</span>
+            <a type="button" class="btn btn-info" href="#">CSV</a>
+            <a type="button" class="btn btn-info" href="#">XLSX</a>
+            <a type="button" class="btn btn-info" href="#">JSON</a>
+        </li>
     {% endfor %}
-
 </ul>
 {% endblock %}

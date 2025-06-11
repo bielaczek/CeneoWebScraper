@@ -5,9 +5,9 @@ import requests
 import pandas as pd
 import glob
 from bs4 import BeautifulSoup
-from matplotlib import as plt
+from matplotlib import pyplot as plt
 from flask import render_template, request, redirect, url_for
-from config import headers
+from app.config import headers
 from app import utils
 
 import matplotlib
@@ -61,7 +61,7 @@ def extract():
     with open(f"./app/data/opinions/{product_id}.json", "w", encoding="UTF-8") as jf:
         json.dump(all_opinions, jf, indent=4, ensure_ascii=False)
 
-    opinions = pd.DataFrame.from_disc(all_opinions)
+    opinions = pd.DataFrame.from_dict(all_opinions)
     opinions['stars'] = (opinions['stars']).apply(lambda s: s.split("/")[0].replace(",", ".")).astype(float)
     opinions["useful"] = opinions['useful'].astype(int)
     opinions["unuseful"] = opinions['unuseful'].astype(int)
@@ -83,7 +83,7 @@ def extract():
     if not os.path.exists("./app/data/products"):
         os.mkdir("./app/data/products")
     with open(f"./app/data/products/{product_id}.json", "w", encoding="UTF-8") as jf:
-        json.dump(all_opinions, jf, indent=4, ensure_ascii=False)
+        json.dump(stats, jf, indent=4, ensure_ascii=False)
 
     return redirect(url_for('product', product_id=product_id, product_name=product_name))
 
@@ -106,7 +106,8 @@ def author():
 @app.route("/product/<product_id>")
 def product(product_id):
     product_name=request.args.get('product_name')
-    opinions = pd.read_json(f"./app/data/opinions/{product_id}.json")
+    with open(f"./app/data/opinions/{product_id}.json", "r", encoding="UTF-8") as jf:
+        opinions = json.load(jf)
     return render_template("product.html", product_id=product_id, product_name=product_name, opinions=opinions)
 
 @app.route("/charts/<product_id>")
